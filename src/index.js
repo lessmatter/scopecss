@@ -94,7 +94,8 @@ function addScopeToCssWithCssTree(css, scopeValue) {
  * 
  * @param {string} html - HTML string
  * @param {string} css - CSS string
- * @returns {string} Scoped HTML string containing the CSS
+ * @returns {string|{html: string, css: string}} Returns a single HTML string (inline) by default,
+ * or an object `{ html, css }` when `options.returnFormat` is `'separate'`.
  * 
  * @example
  * ```javascript
@@ -108,6 +109,17 @@ function addScopeToCssWithCssTree(css, scopeValue) {
  * ```
  * 
  * @example
+ * ```javascript
+ * // Separate return format
+ * const { html: scopedHtml, css: scopedCss } = scopeCss(
+ *   '<div class="button">Click me</div>',
+ *   '.button { color: red; }',
+ *   { returnFormat: 'separate' }
+ * );
+ * // scopedHtml and scopedCss are returned separately
+ * ```
+ * 
+ * @example
  * Usage via GitHub:
  * import scopeCss from 'https://raw.githubusercontent.com/lessmatter/scopecss/main/src/index.js';
  * 
@@ -116,9 +128,13 @@ function addScopeToCssWithCssTree(css, scopeValue) {
  *   '.btn { background: blue; color: white; }'
  * );
  */
-export default function scopeCss(html, css) {
+export default function scopeCss(html, css, options = {}) {
+  const { returnFormat = 'inline' } = options || {};
   const scopeValue = generateScopeKey(); // e.g., "xdfc9a"
   const scopedHtml = addDataScopeToAllElements(html, scopeValue);
   const scopedCss = addScopeToCssWithCssTree(css, scopeValue);
+  if (returnFormat === 'separate') {
+    return { html: scopedHtml, css: scopedCss };
+  }
   return `${scopedHtml}<style>${scopedCss}</style>`;
 } 

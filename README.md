@@ -6,31 +6,31 @@ Lightweight CSS scoping library for HTML using data-scope attributes.
 > This library is currently in alpha and being used internally by Less Matter for testing.  
 > Breaking changes may occur in future versions.
 
+> **🔒 Security notice**  
+> This library does not sanitize HTML or CSS and is not a security isolation tool (no XSS protection).  
+> Use only trusted input or sanitize content before use. If you enforce a strict CSP, prefer `returnFormat: 'separate'` and attach CSS via a non-inline mechanism (nonce/hash or external stylesheet).
+
 ## Installation
 
-This package is not yet published on npm. Use one of the following options:
+This package is not yet on npm. Use one of the following:
 
-- CDN (recommended for browser):
+- CDN (browser):
 
 ```html
 <script type="module">
   import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
-  // Tip: pin to a commit for deterministic builds, e.g.
-  // import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@<commit>/src/index.js';
-  console.log(typeof scopeCss);
 </script>
 ```
 
-- Direct GitHub ESM import (browser):
+- Direct GitHub import (browser):
 
 ```html
 <script type="module">
   import scopeCss from 'https://raw.githubusercontent.com/lessmatter/scopecss/main/src/index.js';
-  console.log(typeof scopeCss);
 </script>
 ```
 
-- Download the file (Node/bundlers):
+- Download (Node/bundlers):
 
 ```bash
 curl -o src/scopecss.js \
@@ -38,89 +38,32 @@ curl -o src/scopecss.js \
 ```
 
 ```js
-// Then import locally
+// Local import
 import scopeCss from './src/scopecss.js';
 ```
 
-## Usage
-
-### Complete Example
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ScopeCSS Example</title>
-</head>
-<body>
-    <div id="app">
-        <button class="btn">Click me</button>
-        <div class="card">Card content</div>
-    </div>
-
-    <script type="module">
-        import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
-        
-        const html = /*html*/`
-            <div class="container">
-                <h1 class="title">Hello World</h1>
-                <p class="text">This is scoped CSS</p>
-                <button class="btn">Submit</button>
-            </div>
-        `;
-        
-        const css = /*css*/`
-            .container { padding: 20px; }
-            .title { color: blue; }
-            .text { font-size: 16px; }
-            .btn { background: green; color: white; }
-        `;
-        
-        const result = scopeCss(html, css);
-        document.getElementById('app').innerHTML = result;
-    </script>
-</body>
-</html>
-```
-
-### 2. Component Libraries
-
-Perfect for component libraries where you need to isolate CSS:
+## Quick start
 
 ```javascript
-// Component library usage
-const componentHtml = /*html*/`
-  <div class="widget">
-    <h3 class="widget-title">Widget Title</h3>
-    <p class="widget-content">Widget content here</p>
+import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
+
+const html = /*html*/`
+  <div class="container">
+    <h1 class="title">Hello</h1>
+    <p class="text">Scoped CSS</p>
+    <button class="btn">Submit</button>
   </div>
 `;
 
-const componentCss = /*css*/`
-  .widget { border: 1px solid #ccc; padding: 15px; }
-  .widget-title { color: #333; margin-bottom: 10px; }
-  .widget-content { color: #666; }
+const css = /*css*/`
+  .container { padding: 20px; }
+  .title { color: blue; }
+  .text { font-size: 16px; }
+  .btn { background: green; color: white; }
 `;
 
-const scopedComponent = scopeCss(componentHtml, componentCss);
-// CSS is now scoped and won't conflict with other components
-```
-
-### 3. Dynamic Content
-
-Great for CMS systems or dynamic content generation:
-
-```javascript
-// User-generated content
-const userHtml = document.querySelector('#user-content').innerHTML;
-const userCss = /*css*/`
-  .user-content h1 { color: blue; }
-  .user-content p { line-height: 1.6; }
-  .user-content a { color: green; }
-`;
-
-const scopedUserContent = scopeCss(userHtml, userCss);
-document.querySelector('#output').innerHTML = scopedUserContent;
+const result = scopeCss(html, css);
+document.getElementById('app').innerHTML = result;
 ```
 
 ## How it works
@@ -132,14 +75,45 @@ document.querySelector('#output').innerHTML = scopedUserContent;
 
 ## API
 
-### `scopeCss(html, css)`
+### `scopeCss(html, css, options?)`
 
 **Parameters:**
 - `html` (string) - HTML string
 - `css` (string) - CSS string
+ - `options` (object, optional)
+   - `returnFormat` (`'inline' | 'separate'`, default `'inline'`) –
+     Controls the return format. `'inline'` returns a single HTML string that already includes a `<style>` tag.
+     `'separate'` returns `{ html, css }` separately.
 
 **Returns:**
-- `string` - Scoped HTML string containing CSS
+- `'inline'`: `string` – HTML string containing a `<style>` tag with scoped CSS
+- `'separate'`: `{ html: string, css: string }`
+
+### Example: separate return
+
+```javascript
+import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
+
+const html = /*html*/`
+  <div class="card">
+    <h2 class="title">Card</h2>
+    <p class="text">Content</p>
+  </div>
+`;
+
+const css = /*css*/`
+  .card { padding: 12px; }
+  .title { color: rebeccapurple; }
+  .text { font-size: 14px; }
+`;
+
+const { html: scopedHtml, css: scopedCss } = scopeCss(html, css, { returnFormat: 'separate' });
+// Insert HTML and CSS separately wherever you want
+document.getElementById('app').innerHTML = scopedHtml;
+const style = document.createElement('style');
+style.textContent = scopedCss;
+document.head.appendChild(style);
+```
 
 ## License
 
