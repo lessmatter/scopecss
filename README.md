@@ -22,14 +22,6 @@ This package is not yet on npm. Use one of the following:
 </script>
 ```
 
-- Direct GitHub import (browser):
-
-```html
-<script type="module">
-  import scopeCss from 'https://raw.githubusercontent.com/lessmatter/scopecss/main/src/index.js';
-</script>
-```
-
 - Download (Node/bundlers):
 
 ```bash
