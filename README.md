@@ -8,25 +8,38 @@ Lightweight CSS scoping library for HTML using data-scope attributes.
 
 ## Installation
 
-Install the package and use an ESM import:
+This package is not yet published on npm. Use one of the following options:
 
-```bash
-npm install @lessmatter/scopecss
-```
-
-```js
-import scopeCss from '@lessmatter/scopecss';
-```
-
-Browser without bundler (CDN):
+- CDN (recommended for browser):
 
 ```html
 <script type="module">
-  import scopeCss from 'https://esm.sh/@lessmatter/scopecss@0.0.1-alpha.1/src/index.js';
-  // esm.sh resolves dependencies automatically in the browser
+  import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
+  // Tip: pin to a commit for deterministic builds, e.g.
+  // import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@<commit>/src/index.js';
   console.log(typeof scopeCss);
-  
 </script>
+```
+
+- Direct GitHub ESM import (browser):
+
+```html
+<script type="module">
+  import scopeCss from 'https://raw.githubusercontent.com/lessmatter/scopecss/main/src/index.js';
+  console.log(typeof scopeCss);
+</script>
+```
+
+- Download the file (Node/bundlers):
+
+```bash
+curl -o src/scopecss.js \
+  https://raw.githubusercontent.com/lessmatter/scopecss/main/src/index.js
+```
+
+```js
+// Then import locally
+import scopeCss from './src/scopecss.js';
 ```
 
 ## Usage
@@ -46,7 +59,7 @@ Browser without bundler (CDN):
     </div>
 
     <script type="module">
-        import scopeCss from 'https://esm.sh/@lessmatter/scopecss@0.0.1-alpha.1/src/index.js';
+        import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
         
         const html = `
             <div class="container">
