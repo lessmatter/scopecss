@@ -61,7 +61,7 @@ import scopeCss from './src/scopecss.js';
     <script type="module">
         import scopeCss from 'https://cdn.jsdelivr.net/gh/lessmatter/scopecss@main/src/index.js';
         
-        const html = `
+        const html = /*html*/`
             <div class="container">
                 <h1 class="title">Hello World</h1>
                 <p class="text">This is scoped CSS</p>
@@ -69,7 +69,7 @@ import scopeCss from './src/scopecss.js';
             </div>
         `;
         
-        const css = `
+        const css = /*css*/`
             .container { padding: 20px; }
             .title { color: blue; }
             .text { font-size: 16px; }
@@ -89,14 +89,14 @@ Perfect for component libraries where you need to isolate CSS:
 
 ```javascript
 // Component library usage
-const componentHtml = `
+const componentHtml = /*html*/`
   <div class="widget">
     <h3 class="widget-title">Widget Title</h3>
     <p class="widget-content">Widget content here</p>
   </div>
 `;
 
-const componentCss = `
+const componentCss = /*css*/`
   .widget { border: 1px solid #ccc; padding: 15px; }
   .widget-title { color: #333; margin-bottom: 10px; }
   .widget-content { color: #666; }
@@ -113,7 +113,7 @@ Great for CMS systems or dynamic content generation:
 ```javascript
 // User-generated content
 const userHtml = document.querySelector('#user-content').innerHTML;
-const userCss = `
+const userCss = /*css*/`
   .user-content h1 { color: blue; }
   .user-content p { line-height: 1.6; }
   .user-content a { color: green; }
