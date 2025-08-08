@@ -1,0 +1,44 @@
+{
+  "name": "@lessmatter/scopecss",
+  "version": "0.0.1-alpha.1",
+  "description": "Lightweight CSS scoping library for HTML (alpha version)",
+  "main": "src/index.js",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "css",
+    "scoping",
+    "html",
+    "css-scope",
+    "data-scope",
+    "css-isolation",
+    "component-scoping",
+    "lightweight"
+  ],
+  "author": "Less Matter",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lessmatter/scopecss.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lessmatter/scopecss/issues"
+  },
+  "homepage": "https://github.com/lessmatter/scopecss#readme",
+  "dependencies": {
+    "node-html-parser": "^6.1.12",
+    "css-tree": "^2.3.1"
+  }
+} 

@@ -1,0 +1,138 @@
+# ScopeCSS by Less Matter
+
+Lightweight CSS scoping library for HTML using data-scope attributes.
+
+> **⚠️ Alpha Version**  
+> This library is currently in alpha and being used internally by Less Matter for testing.  
+> Breaking changes may occur in future versions.
+
+## Installation
+
+Install the package and use an ESM import:
+
+```bash
+npm install @lessmatter/scopecss
+```
+
+```js
+import scopeCss from '@lessmatter/scopecss';
+```
+
+Browser without bundler (CDN):
+
+```html
+<script type="module">
+  import scopeCss from 'https://esm.sh/@lessmatter/scopecss@0.0.1-alpha.1/src/index.js';
+  // esm.sh resolves dependencies automatically in the browser
+  console.log(typeof scopeCss);
+  
+</script>
+```
+
+## Usage
+
+### Complete Example
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ScopeCSS Example</title>
+</head>
+<body>
+    <div id="app">
+        <button class="btn">Click me</button>
+        <div class="card">Card content</div>
+    </div>
+
+    <script type="module">
+        import scopeCss from 'https://esm.sh/@lessmatter/scopecss@0.0.1-alpha.1/src/index.js';
+        
+        const html = `
+            <div class="container">
+                <h1 class="title">Hello World</h1>
+                <p class="text">This is scoped CSS</p>
+                <button class="btn">Submit</button>
+            </div>
+        `;
+        
+        const css = `
+            .container { padding: 20px; }
+            .title { color: blue; }
+            .text { font-size: 16px; }
+            .btn { background: green; color: white; }
+        `;
+        
+        const result = scopeCss(html, css);
+        document.getElementById('app').innerHTML = result;
+    </script>
+</body>
+</html>
+```
+
+### 2. Component Libraries
+
+Perfect for component libraries where you need to isolate CSS:
+
+```javascript
+// Component library usage
+const componentHtml = `
+  <div class="widget">
+    <h3 class="widget-title">Widget Title</h3>
+    <p class="widget-content">Widget content here</p>
+  </div>
+`;
+
+const componentCss = `
+  .widget { border: 1px solid #ccc; padding: 15px; }
+  .widget-title { color: #333; margin-bottom: 10px; }
+  .widget-content { color: #666; }
+`;
+
+const scopedComponent = scopeCss(componentHtml, componentCss);
+// CSS is now scoped and won't conflict with other components
+```
+
+### 3. Dynamic Content
+
+Great for CMS systems or dynamic content generation:
+
+```javascript
+// User-generated content
+const userHtml = document.querySelector('#user-content').innerHTML;
+const userCss = `
+  .user-content h1 { color: blue; }
+  .user-content p { line-height: 1.6; }
+  .user-content a { color: green; }
+`;
+
+const scopedUserContent = scopeCss(userHtml, userCss);
+document.querySelector('#output').innerHTML = scopedUserContent;
+```
+
+## How it works
+
+1. **Generates a random scope key** (e.g., "xdfc9a")
+2. **Adds `data-scope="key"`** to all HTML elements
+3. **Wraps CSS selectors** with `:where([data-scope="key"])`
+4. **Returns complete HTML** with scoped CSS in `<style>` tag
+
+## API
+
+### `scopeCss(html, css)`
+
+**Parameters:**
+- `html` (string) - HTML string
+- `css` (string) - CSS string
+
+**Returns:**
+- `string` - Scoped HTML string containing CSS
+
+## License
+
+MIT License
+
+## Support
+
+- GitHub Issues: [Create issue](https://github.com/lessmatter/scopecss/issues)
+- Documentation: [JSDoc](https://github.com/lessmatter/scopecss/blob/main/src/index.js) 
